@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="ExpandableView">
+        <attr name="android:textColor"/>
+        <attr name="ev_expandIcon" format="reference"/>
+        <attr name="ev_collapseIcon" format="reference"/>
+    </declare-styleable>
+</resources>

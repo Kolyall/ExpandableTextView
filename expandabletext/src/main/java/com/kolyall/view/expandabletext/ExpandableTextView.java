@@ -7,6 +7,7 @@ import android.text.SpannableStringBuilder;
 import android.util.AttributeSet;
 import android.view.View;
 
+import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
@@ -21,7 +22,7 @@ public class ExpandableTextView extends AppCompatTextView implements View.OnClic
     private CharSequence originalText;
     private CharSequence trimmedText;
     private BufferType bufferType;
-    private boolean trim = true;
+    @Getter private boolean mTrim = true;
     private int trimLength;
 
     public ExpandableTextView(Context context) {
@@ -43,7 +44,7 @@ public class ExpandableTextView extends AppCompatTextView implements View.OnClic
     }
 
     private CharSequence getDisplayableText() {
-        return trim ? trimmedText : originalText;
+        return mTrim ? trimmedText : originalText;
     }
 
     @Override
@@ -78,10 +79,10 @@ public class ExpandableTextView extends AppCompatTextView implements View.OnClic
 
     @Override
     public void onClick(View v) {
-        trim = !trim;
+        mTrim = !mTrim;
         setText();
         requestFocusFromTouch();
-        mOnExpandableTextViewListener.onExpandChanged(!trim);
+        mOnExpandableTextViewListener.onExpandChanged(!mTrim);
     }
 
     @Setter OnExpandableTextViewListener mOnExpandableTextViewListener;
