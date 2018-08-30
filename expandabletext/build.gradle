@@ -1,0 +1,55 @@
+apply plugin: 'com.android.library'
+apply from: 'https://raw.githubusercontent.com/Kolyall/MavenPublish/master/appVersion.gradle'
+
+android {
+    compileSdkVersion androidCompileSdkVersion
+    buildToolsVersion androidBuildToolsVersion
+
+    defaultConfig {
+        minSdkVersion androidMinSdkVersion
+        targetSdkVersion androidTargetSdkVersion
+
+        versionCode appVersionCode
+        versionName appVersionName
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    lintOptions {
+        quiet true
+        abortOnError false
+        ignoreWarnings true
+        disable 'InvalidPackage'           //Some libraries have issues with this.
+        disable 'OldTargetApi'
+        //Lint gives this warning but SDK 20 would be Android L Beta.
+        disable 'IconDensities'            //For testing purpose. This is safe to remove.
+        disable 'IconMissingDensityFolder' //For testing purpose. This is safe to remove.
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    implementation "com.android.support:appcompat-v7:${supportLibVer}"
+
+    compileOnly "org.projectlombok:lombok:${lombokVersion}"
+    annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+}
+
+// Place it at the end of the file
+buildscript {
+    repositories {
+        jcenter()
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.0'
+        classpath 'com.github.dcendents:android-maven-gradle-plugin:2.0'
+    }
+}
+apply from: 'https://raw.githubusercontent.com/Kolyall/MavenPublish/master/libraryInfo.gradle'
+apply from: 'https://raw.githubusercontent.com/Kolyall/MavenPublish/master/artifactsSetup.gradle'
+apply from: 'https://raw.githubusercontent.com/Kolyall/MavenPublish/master/installSetup.gradle'
+apply from: 'https://raw.githubusercontent.com/Kolyall/MavenPublish/master/bintraySetup.gradle'
+apply from: 'mavenCustom.gradle'
