@@ -9,9 +9,13 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
+import lombok.Setter;
+import lombok.experimental.Accessors;
+
 /**
  * Created by Timofey Kovalenko on 22.01.2018.
  */
+@Accessors(prefix = "m")
 public class ExpandableView extends RelativeLayout {
 
     ExpandableTextView mExpandableTextView;
@@ -48,10 +52,18 @@ public class ExpandableView extends RelativeLayout {
         mArrowView = findViewById(R.id.arrowView);
         mExpandableTextView.setTextColor(mTextColor);
         mArrowView.setImageDrawable(mExpandableTextView.isTrim() ? mExpandIcon : mCollapseIcon);
-        mExpandableTextView.setOnExpandableTextViewListener(expanded -> mArrowView.setImageDrawable(expanded ? mCollapseIcon : mExpandIcon));
+        mExpandableTextView.setOnExpandableTextViewListener(expanded -> {
+            mArrowView.setImageDrawable(expanded ? mCollapseIcon : mExpandIcon);
+            if (mOnExpandableTextViewListener != null) {
+                mOnExpandableTextViewListener.onExpandChanged(expanded);
+            }
+        });
     }
+
+    @Setter ExpandableTextView.OnExpandableTextViewListener mOnExpandableTextViewListener;
 
     public final void setText(CharSequence text) {
         mExpandableTextView.setText(text);
+        mArrowView.setVisibility(mExpandableTextView.isModified() ? VISIBLE : GONE);
     }
 }

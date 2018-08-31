@@ -56,11 +56,15 @@ public class ExpandableTextView extends AppCompatTextView implements View.OnClic
     }
 
     private CharSequence getTrimmedText(CharSequence text) {
-        if (originalText != null && originalText.length() > trimLength) {
+        if (isModified()) {
             return new SpannableStringBuilder(originalText, 0, trimLength + 1).append(ELLIPSIS);
         } else {
             return originalText;
         }
+    }
+
+    public boolean isModified() {
+        return originalText != null && originalText.length() > trimLength;
     }
 
     public CharSequence getOriginalText() {
@@ -81,7 +85,6 @@ public class ExpandableTextView extends AppCompatTextView implements View.OnClic
     public void onClick(View v) {
         mTrim = !mTrim;
         setText();
-        requestFocusFromTouch();
         mOnExpandableTextViewListener.onExpandChanged(!mTrim);
     }
 
